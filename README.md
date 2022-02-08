@@ -2,7 +2,7 @@
 My favourite audio toolbox
 
 ### TODO:
-[ ] - documentation
+- [ ] documentation
 
 ### Installation
 ```
