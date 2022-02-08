@@ -4,6 +4,27 @@ import torch.nn.functional as F
 from fvrt.loudness import amplitude_to_intensity
 from fvrt.misc     import get_device_obj
 
+def pad_audio(audio, win_length, hop_length, center=2):
+    """
+    Prepare the audio for an operation that requires overlapping frames
+    """
+    if center == 0:
+        n_to_pad = 0
+    elif center == 1:
+        n_to_pad = int(self.win_length // 2)
+    elif center == 2:
+        n_to_pad = int((self.win_length - self.hop_length) // 2)
+    else:
+        raise Exception(f"Unexpected value for center: {self.center}")
+
+    audio = F.pad(audio.unsqueeze(0), (n_to_pad, n_to_pad), mode='reflect').squeeze(0)
+
+    n_too_much = (audio.size(-1)-win_length)%hop_length
+    if n_too_much > 0:
+        audio = audio[..., :-n_too_much]
+
+    return audio
+
 class FVRTSTFT():
     def __init__(
         self,
@@ -52,21 +73,14 @@ class FVRTSTFT():
         self.lin_to_mel_mat = torch.FloatTensor(librosa.filters.mel(sr=self.sr, n_fft=self.win_length, n_mels=self.n_mels)).to(self.device)
         self.window         = torch.hann_window(self.win_length).to(self.device)
 
-    def pad_audio(self, audio):
-        if self.center == 0:
-            n_to_pad = 0
-        elif self.center == 1:
-            n_to_pad = int(self.win_length // 2)
-        elif self.center == 2:
-            n_to_pad = int((self.win_length - self.hop_length) // 2)
-        else:
-            raise Exception(f"Unexpected value for center: {self.center}")
-
-        audio = F.pad(audio.unsqueeze(0), (n_to_pad, n_to_pad), mode='reflect').squeeze(0)
-
-        return audio
-
     def __call__(self, audio):
+
+        audio = pad_audio(
+            audio,
+            win_length = self.win_length,
+            hop_length = self.hop_length,
+            center     = self.center
+        )
 
         spect = torch.stft(
             audio,
