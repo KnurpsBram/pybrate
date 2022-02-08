@@ -1,5 +1,8 @@
-# FVRT-audio
+# fvrt audio
 My favourite audio toolbox
+
+### TODO:
+[ ] - documentation
 
 ### Installation
 ```
