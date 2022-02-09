@@ -48,11 +48,11 @@ def pad_for_overlapping_frames(audio, win_length, hop_length, center=2, drop_inc
     if center == 0:
         n_to_pad = 0
     elif center == 1:
-        n_to_pad = int(self.win_length // 2)
+        n_to_pad = int(win_length // 2)
     elif center == 2:
-        n_to_pad = int((self.win_length - self.hop_length) // 2)
+        n_to_pad = int((win_length - hop_length) // 2)
     else:
-        raise Exception(f"Unexpected value for center: {self.center}")
+        raise Exception(f"Unexpected value for center: {center}")
 
     audio = F.pad(audio.unsqueeze(0), (n_to_pad, n_to_pad), mode='reflect').squeeze(0)
 
