@@ -13,7 +13,7 @@ setup(
     long_description_content_type='text/markdown',
     author='Bram Kooiman',
     author_email='bramkooiman94@gmail.com',
-    packages=['fvrt'],
+    packages=['fvrt_audio'],
     install_requires=[
         'numpy',
         'torch',

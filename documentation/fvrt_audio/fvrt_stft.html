@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>fvrt_audio.fvrt_stft API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>fvrt_audio.fvrt_stft</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">import torch
+import torch.nn.functional as F
+
+from fvrt.loudness import amplitude_to_intensity
+from fvrt.misc     import get_device_obj
+
+def pad_for_overlapping_frames(audio, win_length, hop_length, center=2, drop_incomplete_frame=True):
+    &#34;&#34;&#34;
+    Prepare the audio for an operation that requires overlapping frames
+
+    The padding strategy depends on the values of `center`:
+
+    - 0: the nth frame starts at the index `n*hop_length`. Equivalent to `center=False` in the convention of the `librosa` package.
+    - 1: the nth frame is centered over the index `n*hop_length`. In order to achieve this, the waveform is padded with `win_length//2` waveform samples on either side. Equivalent to `center=True` in the convention of the `librosa` package.
+    - 2: the nth frame is centered over the index `(n+0.5)*hop_length`. In order to achieve this, the waveform is padded with `(win_length-hop_length)//2` samples on either side. With this setting a spectrogram column can be thought of representing `hop_length` waveform samples (excluding any leftover waveform samples that can&#39;t form a frame on the right tail)
+
+    Example (psuedocode):
+    ```
+    x = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+
+    print(pad_for_overlapping_frames(x, win_length=5, hop_length=3, center=0, drop_incomplete_frame=True))
+    &gt;&gt;&gt; [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    &gt;&gt;&gt; [[0, 1, 2, 3, 4], [3, 4, 5, 6, 7], [6, 7, 8, 9, 10]] # the frames that will presumably be constructed after this function
+
+    print(pad_for_overlapping_frames(x, win_length=5, hop_length=3, center=1, drop_incomplete_frame=True))
+    &gt;&gt;&gt; [1, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+    &gt;&gt;&gt; [[1, 0, 0, 1, 2], [1, 2, 3, 4, 5], [4, 5, 6, 7, 8], [7, 8, 9, 10, 11]] # the frames that will presumably be constructed after this function
+
+    print(pad_for_overlapping_frames(x, win_length=5, hop_length=3, center=2, drop_incomplete_frame=True))
+    &gt;&gt;&gt; [0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+    &gt;&gt;&gt; [[0, 0, 1, 2, 3], [2, 3, 4, 5, 6], [5, 6, 7, 8, 9]] # the frames that will presumably be constructed after this function
+    ```
+
+    Parameters
+    ----------
+    audio : torch.FloatTensor of shape __(B, T)__
+        The tensor of audio
+    win_length : int
+        The length of a frame expressed in waveform samples
+    hop_length : int
+        The step size between frames, expressed in waveform samples
+    center : int
+        The parameter that determines how the audio will be padded
+    drop_incomplete_frame: bool
+        Whether to crop the right tail if there are waveform values that don&#39;t exactly fit in a frame
+
+    Returns
+    -------
+    audio : torch.FloatTensor of shape __(B, T&#39;)__
+        Padded (and/or cropped) audio
+    &#34;&#34;&#34;
+    if center == 0:
+        n_to_pad = 0
+    elif center == 1:
+        n_to_pad = int(self.win_length // 2)
+    elif center == 2:
+        n_to_pad = int((self.win_length - self.hop_length) // 2)
+    else:
+        raise Exception(f&#34;Unexpected value for center: {self.center}&#34;)
+
+    audio = F.pad(audio.unsqueeze(0), (n_to_pad, n_to_pad), mode=&#39;reflect&#39;).squeeze(0)
+
+    if drop_incomplete_frame:
+        n_too_much = (audio.size(-1)-win_length)%hop_length
+        if n_too_much &gt; 0:
+            audio = audio[..., :-n_too_much]
+
+    return audio
+
+class FVRTSTFT():
+    def __init__(
+        self,
+        sr         = 16000,
+        win_length = 1024,
+        hop_length = 256,
+        n_fft      = 1024,
+        center     = 2,
+        type       = &#34;log_norm&#34;,
+        mel        = True,
+        n_mels     = 80,
+        device     = &#34;cuda:0&#34;,
+    ):
+        &#34;&#34;&#34;
+        TODO: Documentation
+        &#34;&#34;&#34;
+
+        allowed_spect_types = [&#34;complex&#34;, &#34;mag&#34;, &#34;log&#34;, &#34;log_norm&#34;, &#34;pow&#34;, &#34;db&#34;] # TODO: db_norm?
+        assert spect_type in allowed_spect_types, f&#34;{spect_type} not in {allowed_spect_types}&#34;
+
+        assert not (spect_type==&#34;complex&#34; and mel), &#34;complex spectrogram can&#39;t be melscale&#34;
+
+        self.sr         = sr
+        self.win_length = win_length
+        self.hop_lenght = hop_length
+        self.n_fft      = n_fft
+        self.center     = center
+        self.spect_type = spect_type
+        self.mel        = mel
+        self.n_mels     = n_mels
+        self.device     = get_device_obj(device)
+
+        self.n_rows = self.n_mels if self.mel else (self.n_fft // 2) + 1
+
+        self.lin_to_mel_mat = torch.FloatTensor(librosa.filters.mel(sr=self.sr, n_fft=self.win_length, n_mels=self.n_mels)).to(self.device)
+        self.window         = torch.hann_window(self.win_length).to(self.device)
+
+    def __call__(self, audio):
+
+        audio = pad_audio(
+            audio,
+            win_length = self.win_length,
+            hop_length = self.hop_length,
+            center     = self.center
+        )
+
+        spect = torch.stft(
+            audio,
+            win_length     = self.win_length,
+            hop_length     = self.hop_length,
+            n_fft          = self.win_length,
+            center         = False, # padding is handled by self.pad_audio() and should be omitted by torch.stft()
+            window         = self.window,
+            return_complex = True
+        )
+
+        if self.spect_type == &#34;complex&#34;:
+            return spect
+
+        spect = torch.abs(spect)
+        if self.mel:
+            spect = self.lin_to_mel_mat @ spect
+
+        if   self.spect_type == &#34;mag&#34;:
+            return spect
+        elif self.spect_type == &#34;log&#34;:
+            return torch.log(spect)
+        elif self.spect_type == &#34;log_norm&#34;:
+            return (torch.log(spect) + 5.0) / 5.0
+        elif self.spect_type == &#34;pow&#34;:
+            spect = amplitude_to_intensity(spect)
+            return spect
+        elif self.spect_type == &#34;db&#34;:
+            spect = amplitude_to_db(spect)
+            return spect</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="fvrt_audio.fvrt_stft.pad_for_overlapping_frames"><code class="name flex">
+<span>def <span class="ident">pad_for_overlapping_frames</span></span>(<span>audio, win_length, hop_length, center=2, drop_incomplete_frame=True)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Prepare the audio for an operation that requires overlapping frames</p>
+<p>The padding strategy depends on the values of <code>center</code>:</p>
+<ul>
+<li>0: the nth frame starts at the index <code>n*hop_length</code>. Equivalent to <code>center=False</code> in the convention of the <code>librosa</code> package.</li>
+<li>1: the nth frame is centered over the index <code>n*hop_length</code>. In order to achieve this, the waveform is padded with <code>win_length//2</code> waveform samples on either side. Equivalent to <code>center=True</code> in the convention of the <code>librosa</code> package.</li>
+<li>2: the nth frame is centered over the index <code>(n+0.5)*hop_length</code>. In order to achieve this, the waveform is padded with <code>(win_length-hop_length)//2</code> samples on either side. With this setting a spectrogram column can be thought of representing <code>hop_length</code> waveform samples (excluding any leftover waveform samples that can't form a frame on the right tail)</li>
+</ul>
+<p>Example (psuedocode):</p>
+<pre><code>x = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+
+print(pad_for_overlapping_frames(x, win_length=5, hop_length=3, center=0, drop_incomplete_frame=True))
+&gt;&gt;&gt; [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+&gt;&gt;&gt; [[0, 1, 2, 3, 4], [3, 4, 5, 6, 7], [6, 7, 8, 9, 10]] # the frames that will presumably be constructed after this function
+
+print(pad_for_overlapping_frames(x, win_length=5, hop_length=3, center=1, drop_incomplete_frame=True))
+&gt;&gt;&gt; [1, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+&gt;&gt;&gt; [[1, 0, 0, 1, 2], [1, 2, 3, 4, 5], [4, 5, 6, 7, 8], [7, 8, 9, 10, 11]] # the frames that will presumably be constructed after this function
+
+print(pad_for_overlapping_frames(x, win_length=5, hop_length=3, center=2, drop_incomplete_frame=True))
+&gt;&gt;&gt; [0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+&gt;&gt;&gt; [[0, 0, 1, 2, 3], [2, 3, 4, 5, 6], [5, 6, 7, 8, 9]] # the frames that will presumably be constructed after this function
+</code></pre>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>audio</code></strong> :&ensp;<code>torch.FloatTensor</code> of <code>shape __(B, T)__</code></dt>
+<dd>The tensor of audio</dd>
+<dt><strong><code>win_length</code></strong> :&ensp;<code>int</code></dt>
+<dd>The length of a frame expressed in waveform samples</dd>
+<dt><strong><code>hop_length</code></strong> :&ensp;<code>int</code></dt>
+<dd>The step size between frames, expressed in waveform samples</dd>
+<dt><strong><code>center</code></strong> :&ensp;<code>int</code></dt>
+<dd>The parameter that determines how the audio will be padded</dd>
+<dt><strong><code>drop_incomplete_frame</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Whether to crop the right tail if there are waveform values that don't exactly fit in a frame</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>audio</code></strong> :&ensp;<code>torch.FloatTensor</code> of <code>shape __(B, T')__</code></dt>
+<dd>Padded (and/or cropped) audio</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def pad_for_overlapping_frames(audio, win_length, hop_length, center=2, drop_incomplete_frame=True):
+    &#34;&#34;&#34;
+    Prepare the audio for an operation that requires overlapping frames
+
+    The padding strategy depends on the values of `center`:
+
+    - 0: the nth frame starts at the index `n*hop_length`. Equivalent to `center=False` in the convention of the `librosa` package.
+    - 1: the nth frame is centered over the index `n*hop_length`. In order to achieve this, the waveform is padded with `win_length//2` waveform samples on either side. Equivalent to `center=True` in the convention of the `librosa` package.
+    - 2: the nth frame is centered over the index `(n+0.5)*hop_length`. In order to achieve this, the waveform is padded with `(win_length-hop_length)//2` samples on either side. With this setting a spectrogram column can be thought of representing `hop_length` waveform samples (excluding any leftover waveform samples that can&#39;t form a frame on the right tail)
+
+    Example (psuedocode):
+    ```
+    x = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+
+    print(pad_for_overlapping_frames(x, win_length=5, hop_length=3, center=0, drop_incomplete_frame=True))
+    &gt;&gt;&gt; [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    &gt;&gt;&gt; [[0, 1, 2, 3, 4], [3, 4, 5, 6, 7], [6, 7, 8, 9, 10]] # the frames that will presumably be constructed after this function
+
+    print(pad_for_overlapping_frames(x, win_length=5, hop_length=3, center=1, drop_incomplete_frame=True))
+    &gt;&gt;&gt; [1, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+    &gt;&gt;&gt; [[1, 0, 0, 1, 2], [1, 2, 3, 4, 5], [4, 5, 6, 7, 8], [7, 8, 9, 10, 11]] # the frames that will presumably be constructed after this function
+
+    print(pad_for_overlapping_frames(x, win_length=5, hop_length=3, center=2, drop_incomplete_frame=True))
+    &gt;&gt;&gt; [0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+    &gt;&gt;&gt; [[0, 0, 1, 2, 3], [2, 3, 4, 5, 6], [5, 6, 7, 8, 9]] # the frames that will presumably be constructed after this function
+    ```
+
+    Parameters
+    ----------
+    audio : torch.FloatTensor of shape __(B, T)__
+        The tensor of audio
+    win_length : int
+        The length of a frame expressed in waveform samples
+    hop_length : int
+        The step size between frames, expressed in waveform samples
+    center : int
+        The parameter that determines how the audio will be padded
+    drop_incomplete_frame: bool
+        Whether to crop the right tail if there are waveform values that don&#39;t exactly fit in a frame
+
+    Returns
+    -------
+    audio : torch.FloatTensor of shape __(B, T&#39;)__
+        Padded (and/or cropped) audio
+    &#34;&#34;&#34;
+    if center == 0:
+        n_to_pad = 0
+    elif center == 1:
+        n_to_pad = int(self.win_length // 2)
+    elif center == 2:
+        n_to_pad = int((self.win_length - self.hop_length) // 2)
+    else:
+        raise Exception(f&#34;Unexpected value for center: {self.center}&#34;)
+
+    audio = F.pad(audio.unsqueeze(0), (n_to_pad, n_to_pad), mode=&#39;reflect&#39;).squeeze(0)
+
+    if drop_incomplete_frame:
+        n_too_much = (audio.size(-1)-win_length)%hop_length
+        if n_too_much &gt; 0:
+            audio = audio[..., :-n_too_much]
+
+    return audio</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="fvrt_audio.fvrt_stft.FVRTSTFT"><code class="flex name class">
+<span>class <span class="ident">FVRTSTFT</span></span>
+<span>(</span><span>sr=16000, win_length=1024, hop_length=256, n_fft=1024, center=2, type='log_norm', mel=True, n_mels=80, device='cuda:0')</span>
+</code></dt>
+<dd>
+<div class="desc"><p>TODO: Documentation</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class FVRTSTFT():
+    def __init__(
+        self,
+        sr         = 16000,
+        win_length = 1024,
+        hop_length = 256,
+        n_fft      = 1024,
+        center     = 2,
+        type       = &#34;log_norm&#34;,
+        mel        = True,
+        n_mels     = 80,
+        device     = &#34;cuda:0&#34;,
+    ):
+        &#34;&#34;&#34;
+        TODO: Documentation
+        &#34;&#34;&#34;
+
+        allowed_spect_types = [&#34;complex&#34;, &#34;mag&#34;, &#34;log&#34;, &#34;log_norm&#34;, &#34;pow&#34;, &#34;db&#34;] # TODO: db_norm?
+        assert spect_type in allowed_spect_types, f&#34;{spect_type} not in {allowed_spect_types}&#34;
+
+        assert not (spect_type==&#34;complex&#34; and mel), &#34;complex spectrogram can&#39;t be melscale&#34;
+
+        self.sr         = sr
+        self.win_length = win_length
+        self.hop_lenght = hop_length
+        self.n_fft      = n_fft
+        self.center     = center
+        self.spect_type = spect_type
+        self.mel        = mel
+        self.n_mels     = n_mels
+        self.device     = get_device_obj(device)
+
+        self.n_rows = self.n_mels if self.mel else (self.n_fft // 2) + 1
+
+        self.lin_to_mel_mat = torch.FloatTensor(librosa.filters.mel(sr=self.sr, n_fft=self.win_length, n_mels=self.n_mels)).to(self.device)
+        self.window         = torch.hann_window(self.win_length).to(self.device)
+
+    def __call__(self, audio):
+
+        audio = pad_audio(
+            audio,
+            win_length = self.win_length,
+            hop_length = self.hop_length,
+            center     = self.center
+        )
+
+        spect = torch.stft(
+            audio,
+            win_length     = self.win_length,
+            hop_length     = self.hop_length,
+            n_fft          = self.win_length,
+            center         = False, # padding is handled by self.pad_audio() and should be omitted by torch.stft()
+            window         = self.window,
+            return_complex = True
+        )
+
+        if self.spect_type == &#34;complex&#34;:
+            return spect
+
+        spect = torch.abs(spect)
+        if self.mel:
+            spect = self.lin_to_mel_mat @ spect
+
+        if   self.spect_type == &#34;mag&#34;:
+            return spect
+        elif self.spect_type == &#34;log&#34;:
+            return torch.log(spect)
+        elif self.spect_type == &#34;log_norm&#34;:
+            return (torch.log(spect) + 5.0) / 5.0
+        elif self.spect_type == &#34;pow&#34;:
+            spect = amplitude_to_intensity(spect)
+            return spect
+        elif self.spect_type == &#34;db&#34;:
+            spect = amplitude_to_db(spect)
+            return spect</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="fvrt_audio" href="index.html">fvrt_audio</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="fvrt_audio.fvrt_stft.pad_for_overlapping_frames" href="#fvrt_audio.fvrt_stft.pad_for_overlapping_frames">pad_for_overlapping_frames</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="fvrt_audio.fvrt_stft.FVRTSTFT" href="#fvrt_audio.fvrt_stft.FVRTSTFT">FVRTSTFT</a></code></h4>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>
