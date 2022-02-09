@@ -1,6 +1,5 @@
 import torch
 
-# TODO: documentation
 def amplitude_to_intensity(x):
     return x**2
 
