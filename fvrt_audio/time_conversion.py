@@ -74,6 +74,8 @@ def nsec_to_nframes(nsec, frame_length_nms):
     """
     Convert number of seconds to number of frames
 
+    Assume frames are non-overlapping
+
     Parameters
     ----------
     nsec : float
@@ -91,6 +93,8 @@ def nsec_to_nframes(nsec, frame_length_nms):
 def nframes_to_nsec(nframes, frame_length_nms):
     """
     Convert number of frames to number of seconds
+
+    Assume frames are non-overlapping
 
     Parameters
     ----------
@@ -110,6 +114,8 @@ def nms_to_nframes(nms, frame_length_nms):
     """
     Convert number of milliseconds to number of frames
 
+    Assume frames are non-overlapping
+
     Parameters
     ----------
     nms : float
@@ -128,6 +134,8 @@ def nframes_to_nms(frames, frame_length_nms):
     """
     Convert number of milliseconds to number of frames
 
+    Assume frames are non-overlapping
+    
     Parameters
     ----------
     nframes : int
@@ -141,3 +149,40 @@ def nframes_to_nms(frames, frame_length_nms):
         Number of milliseconds
     """
     return frames * frame_length_nms
+
+def get_nsamples_nms(sr, nsamples=None, nms=None):
+    """
+    Express a property in both number of samples and number of milliseconds depending on which of those two is known and which is unknown.
+
+    At least one of `nsamples` and `nms` must be submitted. If both are submitted, they must match.
+
+    Parameters
+    ----------
+    nsamples : int
+        Number of frames
+    nms : float
+        Duration of one frame in milliseconds
+    sr: int
+        Samplerate of the audio
+
+    Returns
+    -------
+    nsamples : int
+        Number of milliseconds
+    nms : float
+        Number of milliseconds
+    """
+
+    if (nsamples is not None) and (nms is not None):
+        nsamples_ = nms_to_nsamples(nms, sr=sr)
+        nms_ = nsamples_to_nms(nsamples, sr=sr)
+        assert nsamples == nsamples_, f"got conflicting values for nsamples: {nsamples} and {nsamples_}"
+        assert nms == nms_,         f"got conflicting values for nms_: {nms} and {nms_}"
+    elif (nsamples is None) and (nms is not None):
+        nsamples = nms_to_nsamples(nms, sr=sr)
+    elif (nsamples is not None) and (nms is None):
+        nms = nsamples_to_nms(nsamples, sr=sr)
+    else:
+        raise Exception("Expected at least one nsamples and nms to not be None, but both are None")
+
+    return nsamples, nms

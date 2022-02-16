@@ -1,3 +1,4 @@
+import numpy as np
 import torch
 
 def get_device_obj(device):

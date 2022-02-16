@@ -1,9 +1,9 @@
 import torch
 import torch.nn.functional as F
 
-from fvrt_audio.pad_for_overlapping_frames import pad_for_overlapping_frames
-from fvrt_audio.loudness                   import amplitude_to_intensity, amplitude_to_db
-from fvrt_audio.misc                       import get_device_obj
+from fvrt_audio.overlapping_frames import pad_for_overlapping_frames, nsamples_to_n_overlapping_frames
+from fvrt_audio.loudness           import amplitude_to_intensity, amplitude_to_db
+from fvrt_audio.misc               import get_device_obj
 
 class FVRTSTFT():
     def __init__(
@@ -13,7 +13,7 @@ class FVRTSTFT():
         hop_length = 256,
         n_fft      = 1024,
         center     = 2,
-        type       = "log_norm",
+        spect_type = "log_norm",
         mel        = True,
         n_mels     = 80,
         device     = "cuda:0",
@@ -29,7 +29,7 @@ class FVRTSTFT():
 
         self.sr         = sr
         self.win_length = win_length
-        self.hop_lenght = hop_length
+        self.hop_length = hop_length
         self.n_fft      = n_fft
         self.center     = center
         self.spect_type = spect_type
@@ -37,10 +37,18 @@ class FVRTSTFT():
         self.n_mels     = n_mels
         self.device     = get_device_obj(device)
 
-        self.n_rows = self.n_mels if self.mel else (self.n_fft // 2) + 1
+        self.n_rows  = self.n_mels if self.mel else (self.n_fft // 2) + 1
+        self.nyquist = self.sr // 2
 
-        self.lin_to_mel_mat = torch.FloatTensor(librosa.filters.mel(sr=self.sr, n_fft=self.win_length, n_mels=self.n_mels)).to(self.device)
-        self.window         = torch.hann_window(self.win_length).to(self.device)
+        if mel:
+            self.lin_to_mel_mat = torch.FloatTensor(librosa.filters.mel(sr=self.sr, n_fft=self.win_length, n_mels=self.n_mels)).to(self.device)
+        else:
+            self.bin_width_hz = self.nyquist / self.n_rows
+
+        self.window = torch.hann_window(self.win_length).to(self.device)
+
+    def audio_lengths_to_spect_lengths(self, audio_lengths):
+        return nsamples_to_n_overlapping_frames
 
     def __call__(self, audio):
 
