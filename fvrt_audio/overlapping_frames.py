@@ -40,11 +40,12 @@ def audio_to_overlapping_frames(audio, win_length, hop_length, center=2, drop_in
 
     Returns
     -------
-    frames : torch.FloatTensor of shape __(B, N, W)__
-        Overlapping frames of audio. `N` is the amount of frames, `W` is `win_length`.
+    frames : torch.FloatTensor of shape __(B, W, N)__
+        Overlapping frames of audio.  `W` is `win_length`, `N` is the amount of frames.
     """
     audio  = pad_for_overlapping_frames(audio, win_length=win_length, hop_length=hop_length, center=center, drop_incomplete_frame=drop_incomplete_frame)
     frames = audio.unfold(dimension=-1, size=win_length, step=hop_length) # TODO: what if drop_incomplete_frames is False?
+    frames = frames.permute(0, 2, 1) # (B, N, W) to (B, W, N)
     return frames
 
 def pad_for_overlapping_frames(audio, win_length, hop_length, center=2, drop_incomplete_frame=True):
@@ -121,7 +122,7 @@ def nsamples_to_n_overlapping_frames(nsamples, win_length, hop_length, center=2,
         nsamples = nsamples + win_length
     elif center == 2:
         nsamples = nsamples + win_length - hop_length
-    else
+    else:
         raise Exception(f"Unexpected value for center: {center}")
 
     # taking overlapping frames requires extra samples at the tails
