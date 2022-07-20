@@ -1,3 +1,5 @@
+import librosa
+
 import torch
 import torch.nn.functional as F
 
@@ -50,7 +52,7 @@ class FVRTSTFT():
     def audio_lengths_to_spect_lengths(self, audio_lengths):
         return nsamples_to_n_overlapping_frames
 
-    def __call__(self, audio):
+    def __call__(self, audio): # TODO: make spect_type overwriteable through kwarg?
 
         audio = pad_for_overlapping_frames(
             audio,
@@ -88,3 +90,27 @@ class FVRTSTFT():
         elif self.spect_type == "db":
             spect = amplitude_to_db(spect)
             return spect
+
+    def istft(self, spect):
+
+        spect = torch.istft(
+            spect,
+            hop_length     = self.hop_length,
+            n_fft          = self.win_length,
+            center         = False,
+            window         = self.window,
+        )
+
+        if self.center == 0:
+            n_to_crop = self.win_length // 2
+        elif self.center == 1:
+            n_to_crop = 0
+        elif self.center == 2:
+            n_to_crop == (self.win_length - self.hop_length)//2
+        else:
+            raise Exception(f"Unexpected value for center {self.center}")
+
+        if n_to_crop > 0:
+            audio = audio[..., n_to_crop:-n_to_crop]
+
+        return audio

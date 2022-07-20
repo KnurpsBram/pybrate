@@ -22,7 +22,7 @@ def audio_to_overlapping_frames(audio, win_length, hop_length, center=2, drop_in
     >>> [[1, 0, 0, 1, 2], [1, 2, 3, 4, 5], [4, 5, 6, 7, 8], [7, 8, 9, 10, 11]]
 
     print(audio_to_overlapping_frames(x, win_length=5, hop_length=3, center=2, drop_incomplete_frame=True))
-    >>> [[0, 0, 1, 2, 3], [2, 3, 4, 5, 6], [5, 6, 7, 8, 9]]
+    >>> [[0, 0, 1, 2, 3], [2, 3, 4, 5, 6], [5, 6, 7, 8, 9], [8, 9, 10, 11, 0]]
     ```
 
     Parameters

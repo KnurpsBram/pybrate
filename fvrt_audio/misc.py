@@ -1,3 +1,4 @@
+import os
 import numpy as np
 import torch
 
@@ -18,3 +19,7 @@ def cut_from_middle(x, n):
     if n_to_remove_right > 0:
         x = x[..., n_to_remove_left : -n_to_remove_right]
     return x
+       
+def dir_maker(filename):
+    os.makedirs(os.path.dirname(filename), exist_ok=True)
+
