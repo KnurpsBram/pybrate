@@ -6,11 +6,8 @@ My favourite audio toolbox
 
 ### Installation
 ```
-git clone https://github.com/KnurpsBram/fvrt_audio
-cd fvrt_audio
-pip install .
+pip install git+https://github.com/KnurpsBram/fvrt_audio
 ```
-You can remove the repo after installation.
 ### Usage
 ```
 import torch
