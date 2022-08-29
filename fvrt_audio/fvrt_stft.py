@@ -7,6 +7,56 @@ from fvrt_audio.overlapping_frames import pad_for_overlapping_frames, nsamples_t
 from fvrt_audio.loudness           import amplitude_to_intensity, amplitude_to_db
 from fvrt_audio.misc               import get_device_obj
 
+def stft(audio, win_length, hop_length, center=1, n_fft=None, **kwargs):
+    
+    if n_fft is None:
+        n_fft = win_length
+
+    if center == 0:
+        n_to_pad = 0
+    elif center == 1:
+        n_to_pad = win_length // 2
+    elif center == 2:
+        n_to_pad = (win_length - hop_length)/2
+    else:
+        raise Exception(f"Unexpected value for center {center}")
+
+    audio = F.pad(audio, (int(np.floor(n_to_pad)), int(np.ceil(n_to_pad))), mode='reflect')
+
+    spect = torch.stft(audio, n_fft=n_fft, hop_length=hop_length, win_length=win_length, center=False, **kwargs)
+
+    return spect
+
+def istft(spect, hop_length, center=1, win_length=None, **kwargs):
+    
+    n_fft = (spect.shape[-2] - 1) * 2
+
+    if win_length is None:
+        win_length = n_fft
+
+    if center == 0:
+        n_to_crop = 0
+    elif center == 1:
+        n_to_crop = win_length // 2
+    elif center == 2:
+        n_to_crop = (win_length - hop_length)//2
+    else:
+        raise Exception(f"Unexpected value for center {center}")
+
+    audio = torch.istft(spect, n_fft, hop_length=hop_length, win_length=win_length, center=False, **kwargs)
+
+    ### THERE'S A BUG IN PYTORCH ISTFT
+    # https://github.com/pytorch/pytorch/issues/79778
+    # when calling istft with center=False, the audio that comes back has one too few samples. (center=True seems to work fine)
+    # this doesn't match the behaviour of librosa.
+    # really weird.
+    audio = F.pad(audio, (0, 1), mode='reflect')
+
+    if n_to_crop > 0:
+        audio = audio[..., n_to_crop:-n_to_crop]
+
+    return audio
+
 class FVRTSTFT():
     def __init__(
         self,
