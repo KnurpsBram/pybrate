@@ -1,3 +1,5 @@
+import numpy as np
+
 import torch
 import torch.nn.functional as F
 
@@ -73,15 +75,17 @@ def pad_for_overlapping_frames(audio, win_length, hop_length, center=2, drop_inc
         Padded (and/or cropped) audio
     """
     if center == 0:
-        n_to_pad = 0
+        n_to_pad_left = n_to_pad_right = 0
     elif center == 1:
-        n_to_pad = int(win_length // 2)
+        n_to_pad_left = n_to_pad_right = int(win_length // 2)
     elif center == 2:
-        n_to_pad = int((win_length - hop_length) // 2)
+        n_to_pad       = (win_length - hop_length)/2
+        n_to_pad_left  = int(np.floor(n_to_pad))
+        n_to_pad_right = int(np.ceil(n_to_pad))
     else:
         raise Exception(f"Unexpected value for center: {center}")
 
-    audio = F.pad(audio.unsqueeze(0), (n_to_pad, n_to_pad), mode='reflect').squeeze(0)
+    audio = F.pad(audio.unsqueeze(0), (n_to_pad_left, n_to_pad_right), mode='reflect').squeeze(0)
 
     if drop_incomplete_frame:
         n_too_much = (audio.size(-1)-win_length)%hop_length
