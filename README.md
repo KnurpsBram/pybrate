@@ -1,5 +1,5 @@
 # Pybrate
-An audio toolbox built for PyTorch
+Audio tools built for PyTorch
 
 ### Installation
 ```
