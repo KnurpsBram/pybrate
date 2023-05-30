@@ -1,7 +1,7 @@
 import numpy as np
 
-import torch
 import torch.nn.functional as F
+
 
 def audio_to_overlapping_frames(audio, win_length, hop_length, center=2, drop_incomplete_frame=True):
     """
@@ -50,6 +50,7 @@ def audio_to_overlapping_frames(audio, win_length, hop_length, center=2, drop_in
     frames = frames.permute(0, 2, 1) # (B, N, W) to (B, W, N)
     return frames
 
+
 def pad_for_overlapping_frames(audio, win_length, hop_length, center=2, drop_incomplete_frame=True):
     """
     Prepare the audio for an operation that requires overlapping frames
@@ -74,18 +75,10 @@ def pad_for_overlapping_frames(audio, win_length, hop_length, center=2, drop_inc
     audio : torch.FloatTensor of shape __(B, T')__
         Padded (and/or cropped) audio
     """
-    if center == 0:
-        n_to_pad_left = n_to_pad_right = 0
-    elif center == 1:
-        n_to_pad_left = n_to_pad_right = int(win_length // 2)
-    elif center == 2:
-        n_to_pad       = (win_length - hop_length)/2
-        n_to_pad_left  = int(np.floor(n_to_pad))
-        n_to_pad_right = int(np.ceil(n_to_pad))
-    else:
-        raise Exception(f"Unexpected value for center: {center}")
 
-    audio = F.pad(audio.unsqueeze(0), (n_to_pad_left, n_to_pad_right), mode='reflect').squeeze(0)
+    padding_left, padding_right = get_padding(win_length, hop_length, center=center)
+
+    audio = F.pad(audio.unsqueeze(0), (padding_left, padding_right), mode='reflect').squeeze(0)
 
     if drop_incomplete_frame:
         n_too_much = (audio.size(-1)-win_length)%hop_length
@@ -94,46 +87,39 @@ def pad_for_overlapping_frames(audio, win_length, hop_length, center=2, drop_inc
 
     return audio
 
-def nsamples_to_n_overlapping_frames(nsamples, win_length, hop_length, center=2, drop_incomplete_frame=True):
+
+def get_padding(win_length, hop_length, center=2):
     """
-    Converts number of samples to number of overlapping frames
+    Determine how much padding an audio needs to be prepared for an operation that requires overlapping frames
 
     See `audio_to_overlapping_frames()`
 
     Parameters
     ----------
-    audio : torch.FloatTensor of shape __(B, T)__
-        The tensor of audio
     win_length : int
         The length of a frame expressed in waveform samples
     hop_length : int
         The step size between frames, expressed in waveform samples
     center : int
         The parameter that determines how the audio will be padded
-    drop_incomplete_frame: bool
-        Whether to crop the right tail if there are waveform values that don't exactly fit in a frame
 
     Returns
     -------
-    nframes : int
-        Number of frames
+    padding_left : int
+        Amount of samples to be padded to the left of the audio
+    padding_right : int
+        Amount of samples to be padded to the right of the audio
     """
 
-    # mimic padding behaviour
-    if   center == 0:
-        nsamples = nsamples
+    if center == 0:
+        padding_left = padding_right = 0
     elif center == 1:
-        nsamples = nsamples + win_length
+        padding_left = padding_right = int(win_length // 2)
     elif center == 2:
-        nsamples = nsamples + win_length - hop_length
+        n_to_pad = (win_length - hop_length)/2
+        padding_left = int(np.floor(n_to_pad))
+        padding_right = int(np.ceil(n_to_pad))
     else:
         raise Exception(f"Unexpected value for center: {center}")
-
-    # taking overlapping frames requires extra samples at the tails
-    nsamples = nsamples - (win_length - hop_length)
-
-    nframes = nsamples / hop_length
-
-    nframes = int(np.floor(nframes)) if drop_incomplete_frame else int(np.ceil(nframes))
-
-    return nframes
+    
+    return padding_left, padding_right

@@ -6,14 +6,14 @@ with open(os.path.join(os.path.abspath(os.path.dirname(__file__)), 'README.md'),
     long_description = f.read()
 
 setup(
-    name="fvrt_audio",
-    version="1.0",
-    description='My Favourite Audio Tools Implemented in PyTorch',
+    name="pybrate",
+    version="1.1",
+    description='Audio Tools Implemented for PyTorch',
     long_description=long_description,
     long_description_content_type='text/markdown',
     author='Bram Kooiman',
     author_email='bramkooiman94@gmail.com',
-    packages=['fvrt_audio'],
+    packages=['pybrate'],
     install_requires=[
         'numpy',
         'torch',
